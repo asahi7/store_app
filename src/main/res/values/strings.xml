@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">StoreApp</string>
+    <string name="back_button">Back</string>
+    <string name="scan_button">Scan</string>
+    <string name="done_button">Done</string>
+    <string name="open_scan_good_activity">Scan good</string>
+    <string name="productCode">productCode</string>
+    <string name="count">count</string>
+
+</resources>
