@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Seller: {{ seller.user.username }}</h3>
+
+    <h3>Recent sales:</h3>
+    <ul>
+        {% for purchase in purchases %}
+        <li>
+            {% load tz %}
+            <a href="{% url 'core:seller' purchase.seller.user.pk %}">@{{ purchase.seller.user.username }}</a>
+            sold {{ purchase.good.name }} at
+            <a href="{% url 'core:store' purchase.good.store.pk %}">@{{ purchase.good.store.name }}</a>,
+            date: {{ purchase.date | timezone:"Asia/Seoul" }}
+            , q: {{ purchase.quantity }}, m: {{ purchase.money }}
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

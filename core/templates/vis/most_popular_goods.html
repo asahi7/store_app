@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Most popular goods</h3>
+
+    <br>
+
+    <form action="{% url 'core:most_popular_goods' %}" method="get" class="form-inline">
+        <div class="form-group">
+            <label for="show">Show:</label>
+            <select name="show" id="show" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12" selected>12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+            </select>
+            <label>
+                <input type="radio" name="type" id="type1" value="text" {% if as_text %}checked{% endif %}> as a text
+            </label>
+            <label>
+                <input type="radio" name="type" id="type2" value="chart"  {% if as_chart %}checked{% endif %}> as a chart
+            </label>
+            <input type="submit" class="btn btn-default" value="Submit">
+        </div>
+    </form>
+
+    {%  if as_text is True %}
+    <h3>Goods:</h3>
+    <ul>
+        {% for good in goods %}
+            <li>
+                <a href="{% url 'core:goods' good.pk %}">{{ good }}</a>
+                was sold
+                {{ good.purchases_count }} times
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {%  if as_chart is True %}
+    <style>
+        .bar {
+            fill: #4cb8bd;
+        }
+
+        .bar:hover {
+          fill: #4C96BD;
+        }
+
+        .axis--x path {
+          display: none;
+        }
+
+        svg {
+            margin: 20px;
+        }
+    </style>
+
+    <canvas id="myChart" width="960" height="500"></canvas>
+    <script type="text/javascript">
+        data = {{ json_data|safe}}
+        var ctx = document.getElementById("myChart");
+
+        data = {
+            'datasets': [{
+                'data': data.map(function(d) { return d.purchases_count; }),
+                'backgroundColor': ['rgb(141,211,199)','rgb(255,255,179)','rgb(190,186,218)','rgb(251,128,114)','rgb(128,177,211)','rgb(253,180,98)','rgb(179,222,105)','rgb(252,205,229)','rgb(217,217,217)','rgb(188,128,189)','rgb(204,235,197)','rgb(255,237,111)']
+            }],
+            'labels': data.map(function(d) { return d.name; })
+        }
+        var myDoughnutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: data,
+        });
+    </script>
+    {% endif %}
+
+{% endblock %}

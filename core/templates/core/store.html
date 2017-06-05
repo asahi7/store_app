@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Store: {{ store.name }}</h3>
+
+    <p><a href="{% url 'core:goods' store_pk=store.pk %}">Goods in {{ store.name }}</a></p>
+    <p><a href="{% url 'core:purchases' store_pk=store.pk %}">Purchases in {{ store.name }}</a></p>
+
+    <h3>Sellers:</h3>
+    <ul>
+        {% for works in store.works_set.all %}
+            <li>{{ works.seller }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Purchases: <small>(only 10 shown)</small></h3>
+
+    <ul>
+        {% for purchase in purchases %}
+        <li>
+            {% load tz %}
+            <a href="{% url 'core:seller' purchase.seller.user.pk %}">@{{ purchase.seller.user.username }}</a>
+            sold {{ purchase.good.name }} at
+            <a href="{% url 'core:store' purchase.good.store.pk %}">@{{ purchase.good.store.name }}</a>,
+            date: {{ purchase.date | timezone:"Asia/Seoul" }}
+            , q: {{ purchase.quantity }}, m: {{ purchase.money }}
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

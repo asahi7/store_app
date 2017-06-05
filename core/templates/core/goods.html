@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if store is not None %}
+        <h3>Goods in <a href="{% url 'core:store' store.pk %}">{{ store.name }}</a></h3>
+    {% else %}
+        <h3>Goods</h3>
+    {% endif %}
+
+    <ul>
+        {% for good in goods %}
+        <li>{{ good }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

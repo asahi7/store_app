@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Stores:</h3>
+    <ul>
+        {% for store in stores %}
+            <li><a href="{% url 'core:store' store_pk=store.pk %}">{{ store }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h3>Sellers:</h3>
+    <ul>
+        {% for seller in sellers %}
+            <li><a href="{% url 'core:seller' seller_pk=seller.pk %}">{{ seller }}</a></li>
+        {% endfor %}
+    </ul>
+
+
+    <h3>Purchases: <small>(only 10 shown)</small></h3>
+    <ul>
+        {% for purchase in purchases %}
+        <li>
+            {% load tz %}
+            <a href="{% url 'core:seller' purchase.seller.pk %}">@{{ purchase.seller.user.username }}</a>
+            sold {{ purchase.good.name }} at
+            <a href="{% url 'core:store' purchase.good.store.pk %}">@{{ purchase.good.store.name }}</a>,
+            date: {{ purchase.date | timezone:"Asia/Seoul" }}
+            , q: {{ purchase.quantity }}, m: {{ purchase.money }}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Visualizations:</h3>
+    <ul>
+        <li><a href="{% url 'core:rev_made_over_period' %}">Revenue made by stores over a period</a></li>
+        <li><a href="{% url 'core:items_sold_by_seller' %}">Items sold by each seller over a period</a></li>
+        <li><a href="{% url 'core:most_popular_goods' %}">Most popular goods chart</a></li>
+    </ul>
+
+    <h3>Other:</h3>
+    <ul>
+        <li><a href="{% url 'core:goods' %}">All goods</a></li>
+        <li><a href="{% url 'core:purchases' %}">All purchases</a></li>
+    </ul>
+
+{% endblock %}
